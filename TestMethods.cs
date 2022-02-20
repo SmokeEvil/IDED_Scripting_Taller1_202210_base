@@ -80,9 +80,37 @@ namespace TestProject1
 
         internal static Dictionary<int, EValueType> SortDictionaryRegistries(Dictionary<int, EValueType> sourceDict)
         {
-            Dictionary<int, EValueType> result = null;
+            Dictionary<int, EValueType> resultado = new Dictionary<int, EValueType>(); //Diccionario a entregar al problema
 
-            return result;
+            int[] arregloLlaves = new int[sourceDict.Count];
+            sourceDict.Keys.CopyTo(arregloLlaves, 0);
+            EValueType[] arregloValores = new EValueType[sourceDict.Count];
+            sourceDict.Values.CopyTo(arregloValores, 0);
+
+            for (int i = 0; i < arregloLlaves.Length; i++)
+            {
+                for (int k = 0; k < arregloLlaves.Length - 1; k++)
+                {
+                    int siguienteLlave = arregloLlaves[k + 1];
+                    EValueType siguienteValor = arregloValores[k + 1];
+
+                    if (arregloLlaves[k] < siguienteLlave)
+                    {
+                        arregloLlaves[k + 1] = arregloLlaves[k];
+                        arregloLlaves[k] = siguienteLlave;
+
+                        arregloValores[k + 1] = arregloValores[k];
+                        arregloValores[k] = siguienteValor;
+                    }
+                }
+            }
+
+            for (int i = 0; i < sourceDict.Count; i++)
+            {
+                resultado.Add(arregloLlaves[i], arregloValores[i]);
+            }
+
+            return resultado;
         }
 
         internal static Queue<Ticket>[] ClassifyTickets(List<Ticket> sourceList)
