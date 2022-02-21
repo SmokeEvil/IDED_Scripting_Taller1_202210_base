@@ -115,9 +115,37 @@ namespace TestProject1
 
         internal static Queue<Ticket>[] ClassifyTickets(List<Ticket> sourceList)
         {
-            Queue<Ticket>[] result = null;
+            Queue<Ticket> colaPagos = new Queue<Ticket>();
+            Queue<Ticket> colaSuscripcion = new Queue<Ticket>();
+            Queue<Ticket> colaCancelacion = new Queue<Ticket>();
 
-            return result;
+            Queue<Ticket>[] resultado = { colaPagos, colaSuscripcion, colaCancelacion };
+
+            Ticket[] copia = sourceList.ToArray();
+
+            for (int i = 0; i < copia.Length; i++)
+            {
+                for (int k = 0; k < copia.Length - 1; k++)
+                {
+                    int siguienteTurno = copia[k + 1].Turn;
+                    Ticket siguienteTicket = copia[k + 1];
+
+                    if (copia[k].Turn > siguienteTurno)
+                    {
+                        copia[k + 1] = copia[k];
+                        copia[k] = siguienteTicket;
+                    }
+                }
+            }
+
+            for (int i = 0; i < copia.Length; i++)
+            {
+                if (copia[i].RequestType == Ticket.ERequestType.Payment) colaPagos.Enqueue(copia[i]);
+                else if (copia[i].RequestType == Ticket.ERequestType.Subscription) colaSuscripcion.Enqueue(copia[i]);
+                else colaCancelacion.Enqueue(copia[i]);
+            }
+
+            return resultado;
         }
 
         internal static bool AddNewTicket(Queue<Ticket> targetQueue, Ticket ticket)
