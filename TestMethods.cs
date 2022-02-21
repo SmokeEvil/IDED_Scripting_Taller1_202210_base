@@ -152,6 +152,8 @@ namespace TestProject1
         {
             bool result = false;
 
+            if (ticket.RequestType == targetQueue.Peek().RequestType && ticket.Turn >= 1 && ticket.Turn <= 99) result = true;
+
             return result;
         }        
     }
